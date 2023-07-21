@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +15,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Authentication
+Route::post('/register', [UserController::class, 'register']);
+Route::post('/login', [UserController::class, 'login']); 
+
+Route::middleware('auth:sanctum')->group(function(){
+
+    // Students 
+Route::resource('/students', StudentController::class);
+
+// Courses
+Route::resource('/courses', CourseController::class);
+
+// Enrollments
+Route::post('/enroll', [EnrollmentController::class, 'enroll']);
+    
+  });
+
